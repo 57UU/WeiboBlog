@@ -1,3 +1,5 @@
+using System.Net.Sockets;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -142,29 +144,49 @@ public partial class WebLoader : ContentPage
             //await i.EvaluateJavaScriptAsync("");
         }
     }
+    // 设置剪切板的数据
+    private async void SetClipboard(string text)
+    {
+        await Clipboard.Default.SetTextAsync(text);
+    }
+    string html;
     void handle()
     {
         passages.Sort();
         StringBuilder stringBuilder = new StringBuilder();
         foreach(var i in passages)
         {
-            stringBuilder.Append($"<h1>{i.title}</h1><br><h3>{i.date.ToString()}<h3><div>{i.html}</div>");
+            
+            stringBuilder.Append($"<h1>{i.title}</h1><br><h3>{i.date.ToString()}<h3><div>{i.html}</div><br><br>");
 
         }
         webview.IsVisible = true;
         webview.Navigated += Webview_Navigated;
+        html= stringBuilder.ToString();
         webview.Source = new HtmlWebViewSource()
         {
-            Html= stringBuilder.ToString()
+           Html= html
         };
         printBtn.IsVisible = true;
+        thread = new Thread(() => { startServer(); });
+        thread.Start();
+        //this.Disappearing += (s, o) => { thread.Join(); };
         
 
     }
 
-    private void Webview_Navigated(object sender, WebNavigatedEventArgs e)
+    private async void Webview_Navigated(object sender, WebNavigatedEventArgs e)
     {
-        webview.EvaluateJavaScriptAsync("window.print();");
+        try
+        {
+            Uri uri = new Uri("http://127.0.0.1:8080");
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            // An unexpected error occurred. No browser may be installed on the device.
+            await DisplayAlert("Error", ex.ToString(), "OK");
+        }
     }
 
     string getLast()
@@ -186,15 +208,58 @@ public partial class WebLoader : ContentPage
     {
         Webview_Navigated(this,null);
     }
+
+    private void Button_Clicked_2(object sender, EventArgs e)
+    {
+        SetClipboard(html);
+    }
+    Thread thread;
+    void startServer()
+    {
+        var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        var localEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8080);
+        listener.Bind(localEndPoint);
+        listener.Listen(10);
+
+        Console.WriteLine("Server started. Listening on http://127.0.0.1:8080");
+
+        while (true)
+        {
+            Console.WriteLine("Waiting for a connection...");
+            var handler = listener.Accept();
+            Console.WriteLine($"Connection from {handler.RemoteEndPoint}");
+
+            var buffer = new byte[1024];
+            var bytesReceived = handler.Receive(buffer);
+            var request = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
+            Console.WriteLine($"Request received:\n{request}");
+
+            var response = $"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n <head><meta charset=\"utf-8\"></head><body>{html}</body>";
+            var responseBytes = Encoding.UTF8.GetBytes(response);
+            handler.Send(responseBytes);
+            handler.Shutdown(SocketShutdown.Both);
+            handler.Close();
+        }
+    }
+
+    private void Button_Clicked_3(object sender, EventArgs e)
+    {
+        html = "OK";
+        new Thread(startServer).Start();
+    }
 }
 class PassageData:IComparable<PassageData> 
+
 {
     public DateTime date;
     public string title;
-    public string html;
+    public string html { set { _html = value.Replace("<wbr>", " ").Replace("http","https"); }
+        get { return _html; } }
+    string _html;
 
     public int CompareTo(PassageData other)
     {
         return date.CompareTo(other.date);
     }
+    
 }
