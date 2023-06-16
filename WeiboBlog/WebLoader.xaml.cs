@@ -91,7 +91,7 @@ public partial class WebLoader : ContentPage
             WebView webview2 = new WebView();
             list.Add(webview2);
             layout.Add(webview2);
-            await Task.Delay(120);
+            await Task.Delay(120);//这个不加就会报错，我也不知道为什么
             webview2.Navigated += async (s,o)=> {
                 WebView web = (WebView)s;
                 string js = @"
@@ -154,6 +154,10 @@ public partial class WebLoader : ContentPage
     {
         passages.Sort();
         StringBuilder stringBuilder = new StringBuilder();
+        //add print button
+        stringBuilder.Append("<button onclick=\"" +
+            "window.print()" +
+            "\" id=\"printBtn\">PRINT</button>");
         foreach(var i in passages)
         {
             
@@ -211,6 +215,7 @@ public partial class WebLoader : ContentPage
 
     private void Button_Clicked_2(object sender, EventArgs e)
     {
+        //copy source code
         SetClipboard(html);
     }
     Thread thread;

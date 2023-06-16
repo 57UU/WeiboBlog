@@ -14,6 +14,7 @@
             <Entry x:Name="entry"/>
             <Button Text="Try Default" Clicked="Button_Clicked"/>
             <Button Text="Start" Clicked="Button_Clicked_1"/>
+            <Button Text="使用方法" Clicked="Button_Clicked_2"/>
 
         </VerticalStackLayout>
     </ScrollView>

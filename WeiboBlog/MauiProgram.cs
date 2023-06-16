@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿//using Microsoft.Extensions.Logging;
 
 namespace WeiboBlog;
 
@@ -16,7 +16,7 @@ public static class MauiProgram
 			});
 
 #if DEBUG
-		builder.Logging.AddDebug();
+		//builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();

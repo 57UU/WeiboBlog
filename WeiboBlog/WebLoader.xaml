@@ -9,6 +9,6 @@
         <Button x:Name="button" Text="AllLoaded" Clicked="Button_Clicked"/>
         <Button x:Name="printBtn" Text="Extern Broeser" Clicked="Button_Clicked_1" IsVisible="false"/>
         <Button Text="Copy Source Code" Clicked="Button_Clicked_2"/>
-        <Button Text="DebugServer" Clicked="Button_Clicked_3"/>
+        <Button Text="DebugServer" Clicked="Button_Clicked_3" IsVisible="false"/>
     </VerticalStackLayout>
 </ContentPage>
