@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled" NavBarIsVisible="True" >
     <Shell.TitleView>
         <HorizontalStackLayout>
-            <Label Text="Weibo Downloader"/>
+            <Label Text="Weibo Downloader" FontSize="Body"/>
             <Button Text="帮助" Clicked="Button_Clicked"/>
         </HorizontalStackLayout>
     </Shell.TitleView>
