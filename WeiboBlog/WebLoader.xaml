@@ -9,6 +9,7 @@
         <Button x:Name="button" Text="AllLoaded" Clicked="Button_Clicked"/>
         <Button x:Name="printBtn" Text="Extern Browser" Clicked="Button_Clicked_1" IsVisible="false"/>
         <Button x:Name="copy" Text="Copy Source Code" Clicked="Button_Clicked_2" IsVisible="false"/>
+        <Button x:Name="save" Text="分享源代码" Clicked="save_Clicked" IsVisible="false"/>
         <Button Text="DebugServer" Clicked="Button_Clicked_3" IsVisible="false"/>
     </VerticalStackLayout>
 </ContentPage>
