@@ -22,7 +22,7 @@
 [视频教程](https://www.bilibili.com/video/BV12s4y1y7HT)
 ## 🖥 支持的操作系统
  - Android6+ 支持
- - ios&Macos 因鄙人家贫，无从至Mac以编译
+ - ios&Macos 因鄙人家贫，无从致Mac以编译
  - Windows 不支持（MAUI自己的问题）
 ## 🚀 下载渠道
  - [阿里云盘](https://www.aliyundrive.com/s/Ujyno649i1H)
