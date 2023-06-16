@@ -157,7 +157,8 @@ public partial class WebLoader : ContentPage
         //add print button
         stringBuilder.Append("<button onclick=\"" +
             "window.print()" +
-            "\" id=\"printBtn\">PRINT</button>");
+            "\" id=\"printBtn\">PRINT</button>" +
+            "<script>window.print()</script>");
         foreach(var i in passages)
         {
             
@@ -167,11 +168,15 @@ public partial class WebLoader : ContentPage
         webview.IsVisible = true;
         webview.Navigated += Webview_Navigated;
         html= stringBuilder.ToString();
+        html = $"<head><title>BEIBO DOWNLOADER</title><meta charset=\"utf-8\"></head><body><script>document.body.style.width=\"100vw\"</script>{html}</body>";
+
+
         webview.Source = new HtmlWebViewSource()
         {
            Html= html
         };
         printBtn.IsVisible = true;
+        copy.IsVisible = true;
         thread = new Thread(() => { startServer(); });
         thread.Start();
         //this.Disappearing += (s, o) => { thread.Join(); };
@@ -239,7 +244,7 @@ public partial class WebLoader : ContentPage
             var request = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
             Console.WriteLine($"Request received:\n{request}");
 
-            var response = $"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n <head><meta charset=\"utf-8\"></head><body>{html}</body>";
+            var response = $"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n {html}";
             var responseBytes = Encoding.UTF8.GetBytes(response);
             handler.Send(responseBytes);
             handler.Shutdown(SocketShutdown.Both);

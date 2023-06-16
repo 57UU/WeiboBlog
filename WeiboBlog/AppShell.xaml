@@ -4,7 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:WeiboBlog"
-    Shell.FlyoutBehavior="Disabled">
+    Shell.FlyoutBehavior="Disabled" NavBarIsVisible="True" >
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Label Text="Weibo Downloader"/>
+            <Button Text="帮助" Clicked="Button_Clicked"/>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
 
     <ShellContent
         Title="Home"
