@@ -34,5 +34,20 @@ public partial class MainPage : ContentPage
 
         DisplayAlert("HELP", help, "OK");
     }
+
+    //about
+    private async void Button_Clicked_3(object sender, EventArgs e)
+    {
+        try
+        {
+            Uri uri = new Uri("https://github.com/57UU/WeiboBlog");
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            // An unexpected error occurred. No browser may be installed on the device.
+            await DisplayAlert("Error", ex.ToString(), "OK");
+        }
+    }
 }
 
