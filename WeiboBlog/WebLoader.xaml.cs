@@ -92,7 +92,7 @@ public partial class WebLoader : ContentPage
             WebView webview2 = new WebView();
             list.Add(webview2);
             layout.Add(webview2);
-            await Task.Delay(120);//Õâ¸ö²»¼Ó¾Í»á±¨´í£¬ÎÒÒ²²»ÖªµÀÎªÊ²Ã´
+            await Task.Delay(120);//è¿™ä¸ªä¸åŠ å°±ä¼šæŠ¥é”™ï¼Œæˆ‘ä¹Ÿä¸çŸ¥é“ä¸ºä»€ä¹ˆ
             webview2.Navigated += async (s,o)=> {
                 WebView web = (WebView)s;
                 string js = @"
@@ -145,7 +145,7 @@ public partial class WebLoader : ContentPage
             //await i.EvaluateJavaScriptAsync("");
         }
     }
-    // ÉèÖÃ¼ôÇĞ°åµÄÊı¾İ
+    // è®¾ç½®å‰ªåˆ‡æ¿çš„æ•°æ®
     private async void SetClipboard(string text)
     {
         await Clipboard.Default.SetTextAsync(text);
@@ -269,7 +269,7 @@ public partial class WebLoader : ContentPage
 
         await Share.Default.RequestAsync(new ShareFileRequest
         {
-            Title = "·ÖÏíÔ´´úÂëÎÄ¼ş",
+            Title = "åˆ†äº«æºä»£ç æ–‡ä»¶",
             File = new ShareFile(file)
         });
 
