@@ -2,6 +2,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WeiboBlog;
 
@@ -91,7 +92,7 @@ public partial class WebLoader : ContentPage
             WebView webview2 = new WebView();
             list.Add(webview2);
             layout.Add(webview2);
-            await Task.Delay(120);//’‚∏ˆ≤ªº”æÕª·±®¥Ì£¨Œ““≤≤ª÷™µ¿Œ™ ≤√¥
+            await Task.Delay(120);//Ëøô‰∏™‰∏çÂä†Â∞±‰ºöÊä•ÈîôÔºåÊàë‰πü‰∏çÁü•ÈÅì‰∏∫‰ªÄ‰πà
             webview2.Navigated += async (s,o)=> {
                 WebView web = (WebView)s;
                 string js = @"
@@ -144,7 +145,7 @@ public partial class WebLoader : ContentPage
             //await i.EvaluateJavaScriptAsync("");
         }
     }
-    // …Ë÷√ºÙ«–∞Âµƒ ˝æ›
+    // ËÆæÁΩÆÂâ™ÂàáÊùøÁöÑÊï∞ÊçÆ
     private async void SetClipboard(string text)
     {
         await Clipboard.Default.SetTextAsync(text);
@@ -177,6 +178,7 @@ public partial class WebLoader : ContentPage
         };
         printBtn.IsVisible = true;
         copy.IsVisible = true;
+        save.IsVisible = true;
         thread = new Thread(() => { startServer(); });
         thread.Start();
         //this.Disappearing += (s, o) => { thread.Join(); };
@@ -256,6 +258,21 @@ public partial class WebLoader : ContentPage
     {
         html = "OK";
         new Thread(startServer).Start();
+    }
+
+    private async  void save_Clicked(object sender, EventArgs e)
+    {
+        string fn = "source_code.txt";
+        string file = Path.Combine(FileSystem.CacheDirectory, fn);
+
+        File.WriteAllText(file, html);
+
+        await Share.Default.RequestAsync(new ShareFileRequest
+        {
+            Title = "ÂàÜ‰∫´Ê∫ê‰ª£Á†ÅÊñá‰ª∂",
+            File = new ShareFile(file)
+        });
+
     }
 }
 class PassageData:IComparable<PassageData> 
