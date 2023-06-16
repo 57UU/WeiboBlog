@@ -17,7 +17,10 @@
 > -->点击`在外部浏览器中打开`，保存为PDF即可(图片无法获取)
 > 
 > -->点击`复制源代码`，然后在*电脑浏览器*上打开属于[新浪博客](https://blog.sina.cn/)任一界面，打开开发工具`F12`，点击`元素`(`element`)，对开头为`<html`的元素右键点击`编辑为HTML`，将剪切板中的文本复制进去替换原来的所有文本，最后打印为PDF即可(`ctrl`+`P`)
-
+## 🖥 支持的操作系统
+ - Android6+ 支持
+ - ios&Macos 因鄙人家贫，无从至Mac以编译
+ - Windows 不支持（MAUI自己的问题）
 ## 🚀 下载渠道
  - [阿里云盘](https://www.aliyundrive.com/s/Ujyno649i1H)
  - [Github Release](https://github.com/57UU/WeiboBlog/releases)
