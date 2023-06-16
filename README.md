@@ -21,6 +21,7 @@
 ## 🚀 下载渠道
  - [阿里云盘](https://www.aliyundrive.com/s/Ujyno649i1H)
  - [Github Release](https://github.com/57UU/WeiboBlog/releases)
+ - [123云盘](https://www.123pan.com/s/hXCiVv-E35N3.html)
 
 ## ⌨️ 开发环境
   Visual Studio 2022,MAUI负载
