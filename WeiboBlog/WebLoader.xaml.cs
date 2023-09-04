@@ -32,12 +32,31 @@ public partial class WebLoader : ContentPage
             await Task.Delay(300);
         }
     }
-
-    void scrollBottom()
+    string prev = "";
+    int count = 0;
+    async void scrollBottom()
 	{
-		string js = "window.scrollTo(0, document.body.scrollHeight);";
-		webview.EvaluateJavaScriptAsync(js);
-	}
+        string getHeight = "document.documentElement.scrollTop";
+
+        string js = "window.scrollTo(0, document.body.scrollHeight);";
+        var height = await webview.EvaluateJavaScriptAsync(getHeight);
+        await webview.EvaluateJavaScriptAsync(js);
+        if (prev == height)
+        {
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
+        prev = height;
+        if (count == 8)
+        {
+            Button_Clicked(null,null);
+        }
+        
+
+    }
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
@@ -56,16 +75,20 @@ public partial class WebLoader : ContentPage
                 });
                return str;
             }
-            getLinks();
+            getLinks()
             
         ";
         var result=await webview.EvaluateJavaScriptAsync(js);
-        //await Task.Delay(100);
+        await Task.Delay(100);
         
-        while (result == null) {
+        while (result == null ) {
 
-            result = await webview.EvaluateJavaScriptAsync("getLinks();");
+            result = await webview.EvaluateJavaScriptAsync("getLinks()");
             await Task.Delay(100);
+        }
+        if (result == "null")
+        {
+            await DisplayAlert("Error", "maybe this platform is not support", "OK");
         }
 
 
@@ -171,12 +194,13 @@ public partial class WebLoader : ContentPage
         html2= stringBuilder.ToString();
         var body = html2;
         html2 = $"<head><title>BEIBO DOWNLOADER</title><meta charset=\"utf-8\"></head><body><script>document.body.style.width=\"100vw\"</script>{html2}</body>";
-
+        string head;
         
         webview.Navigated += async (a, b) =>
         {
-
-            string js = $"document.body.innerHTML=String.raw`{body}`;";
+            string head=await webview.EvaluateJavaScriptAsync("document.head");
+            //html2 = $"{head}<script>document.body.style.width=\"100vw\"</script><body>{body}</body>";
+            string js = $"document.body.innerHTML=String.raw`<body>{body}</body>`;";
             var re=await webview.EvaluateJavaScriptAsync(js);
 
             await Task.Delay(1000);
@@ -188,7 +212,17 @@ public partial class WebLoader : ContentPage
         printBtn.IsVisible = true;
         copy.IsVisible = true;
         save.IsVisible = true;
-        thread = new Thread(() => { startServer(); });
+        thread = new Thread(() =>
+        {
+            try
+            {
+startServer();
+            }catch (Exception ex)
+            {
+
+            }
+            
+        });
         thread.Start();
         //this.Disappearing += (s, o) => { thread.Join(); };
         
