@@ -50,7 +50,7 @@ public partial class WebLoader : ContentPage
             count = 0;
         }
         prev = height;
-        if (count == 8)
+        if (count == 10)
         {
             Button_Clicked(null,null);
         }
