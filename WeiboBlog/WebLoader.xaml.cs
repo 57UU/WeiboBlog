@@ -150,7 +150,7 @@ public partial class WebLoader : ContentPage
     {
         await Clipboard.Default.SetTextAsync(text);
     }
-    string html;
+    string html2;
     void handle()
     {
         passages.Sort();
@@ -168,14 +168,23 @@ public partial class WebLoader : ContentPage
         }
         webview.IsVisible = true;
         webview.Navigated += Webview_Navigated;
-        html= stringBuilder.ToString();
-        html = $"<head><title>BEIBO DOWNLOADER</title><meta charset=\"utf-8\"></head><body><script>document.body.style.width=\"100vw\"</script>{html}</body>";
+        html2= stringBuilder.ToString();
+        var body = html2;
+        html2 = $"<head><title>BEIBO DOWNLOADER</title><meta charset=\"utf-8\"></head><body><script>document.body.style.width=\"100vw\"</script>{html2}</body>";
 
-
-        webview.Source = new HtmlWebViewSource()
+        
+        webview.Navigated += async (a, b) =>
         {
-           Html= html
+
+            string js = $"document.body.innerHTML=String.raw`{body}`;";
+            var re=await webview.EvaluateJavaScriptAsync(js);
+
+            await Task.Delay(1000);
+            await webview.EvaluateJavaScriptAsync(js);
+
         };
+        webview.Source = "https://blog.sina.cn/";
+
         printBtn.IsVisible = true;
         copy.IsVisible = true;
         save.IsVisible = true;
@@ -185,6 +194,8 @@ public partial class WebLoader : ContentPage
         
 
     }
+
+
 
     private async void Webview_Navigated(object sender, WebNavigatedEventArgs e)
     {
@@ -223,7 +234,7 @@ public partial class WebLoader : ContentPage
     private void Button_Clicked_2(object sender, EventArgs e)
     {
         //copy source code
-        SetClipboard(html);
+        SetClipboard(html2);
     }
     Thread thread;
     void startServer()
@@ -246,7 +257,7 @@ public partial class WebLoader : ContentPage
             var request = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
             Console.WriteLine($"Request received:\n{request}");
 
-            var response = $"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n {html}";
+            var response = $"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n {html2}";
             var responseBytes = Encoding.UTF8.GetBytes(response);
             handler.Send(responseBytes);
             handler.Shutdown(SocketShutdown.Both);
@@ -256,7 +267,7 @@ public partial class WebLoader : ContentPage
 
     private void Button_Clicked_3(object sender, EventArgs e)
     {
-        html = "OK";
+        html2 = "OK";
         new Thread(startServer).Start();
     }
 
@@ -265,7 +276,7 @@ public partial class WebLoader : ContentPage
         string fn = "source_code.txt";
         string file = Path.Combine(FileSystem.CacheDirectory, fn);
 
-        File.WriteAllText(file, html);
+        File.WriteAllText(file, html2);
 
         await Share.Default.RequestAsync(new ShareFileRequest
         {
